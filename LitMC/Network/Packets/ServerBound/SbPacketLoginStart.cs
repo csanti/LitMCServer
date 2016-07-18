@@ -18,22 +18,34 @@ namespace LitMC.Network.Packets.ServerBound
         public override void Process()
         {
             Log.Debug("[PACKET] LoginStart - Username: {0}", username);
+            bool encryptionEnabled = false;
+            if(encryptionEnabled)
+            {
+                var verifyToken = new byte[4];
+                var csp = new RNGCryptoServiceProvider();
+                csp.GetBytes(verifyToken);
+                Connection.VerificationToken = verifyToken;
 
-            var verifyToken = new byte[4];
-            var csp = new RNGCryptoServiceProvider();
-            csp.GetBytes(verifyToken);
-            Connection.VerificationToken = verifyToken;
+                var encodedKey = AsnKeyBuilder.PublicKeyToX509(TcpServer.ServerKey);
 
-            var encodedKey = AsnKeyBuilder.PublicKeyToX509(TcpServer.ServerKey);
+                string serverId = "";
+                var random = RandomNumberGenerator.Create();
+                byte[] data = new byte[8];
+                random.GetBytes(data);
+                foreach (byte b in data)
+                    serverId += b.ToString("X2");
 
-            string serverId = "";
-            var random = RandomNumberGenerator.Create();
-            byte[] data = new byte[8];
-            random.GetBytes(data);            
-            foreach (byte b in data)
-                serverId += b.ToString("X2");
+                
+                new CbEncryptionKeyRequest(serverId, encodedKey.GetBytes(), verifyToken).Send(Connection);
+            }
+            else
+            {
+                new CbLoginSuccess().Send(Connection);
+                new CbSpawnLocation().Send(Connection);
+            }
 
-            new CbEncryptionKeyRequest(serverId, encodedKey.GetBytes(), verifyToken).Send(Connection);
+            Connection.HandshakeState = 2;
+
         }
 
         public override void Read()

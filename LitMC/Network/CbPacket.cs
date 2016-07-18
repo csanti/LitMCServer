@@ -35,7 +35,7 @@ namespace LitMC.Network
             {
                 using (BinaryWriter writer = new BinaryWriter(headerStream, new UTF8Encoding()))
                 {
-                    WriteVarInt(writer, (uint)(body.Length + 1));
+                    WriteVarInt(writer, (uint)(body.Length + 1));                    
                     writer.Write(OpCodes.ClientBound[GetType()]);
                 }
                 
@@ -48,7 +48,7 @@ namespace LitMC.Network
             header.CopyTo(packet, 0);
             body.CopyTo(packet, header.Length);
 
-            Log.Debug("Enviando: {0}", BitConverter.ToString(packet.ToArray()));
+            Log.Debug("Enviando - ID: {0} Data: {1}", OpCodes.ClientBound[GetType()], BitConverter.ToString(packet.ToArray()));
 
             connection.PushPacket(packet);
 
@@ -72,6 +72,11 @@ namespace LitMC.Network
         {
             WriteVarInt(writer, (uint)data.Length);
             writer.Write(data);
+        }
+
+        protected void WritePosition(BinaryWriter writer, int x, int y, int z)
+        {
+            writer.Write(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
         }
     }
 }

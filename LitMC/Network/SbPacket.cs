@@ -72,5 +72,21 @@ namespace LitMC.Network
             }            
             return result;
         }
+
+        protected byte[] ReadBytes()
+        {
+            int arrayLenght = ReadVarInt();
+            byte[] result = new byte[arrayLenght];
+
+            try
+            {
+                Stream.Read(result, 0, arrayLenght);                
+            }
+            catch (Exception ex)
+            {
+                Log.WarnException("SbPacket-ReadBytes ", ex);
+            }
+            return result;
+        }
     }
 }
