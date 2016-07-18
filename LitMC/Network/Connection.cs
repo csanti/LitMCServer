@@ -26,7 +26,25 @@ namespace LitMC.Network
 
         private static void SendAll()
         {
+            while (true)
+            {
+                for (int i = 0; i < Connections.Count; i++)
+                {
+                    try
+                    {
+                        if (!Connections[i].Send())
+                        {
+                            Connections.RemoveAt(i--);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.ErrorException("Connection: SendAll:", ex);
+                    }
+                }
 
+                Thread.Sleep(10);
+            }
         }
 
 
@@ -41,7 +59,8 @@ namespace LitMC.Network
 
         public byte[] VerificationToken;
 
-        protected List<byte[]> DataToSend = new List<byte[]>();
+        private List<byte[]> DataToSend = new List<byte[]>();
+        private int DataToSendSize;
 
         public Connection(IScsServerClient client)
         {
@@ -65,9 +84,10 @@ namespace LitMC.Network
 
             MinecraftProtocolMessage message = (MinecraftProtocolMessage)e.Message;
             Buffer = message.Data;
-            if(HandshakeState == 2 && OpCodes.ServerBound.ContainsKey(message.PacketId))
+            Log.Debug("ID: {0}  -  Data: {1}", message.PacketId.ToString(), BitConverter.ToString(message.Data));
+
+            if (HandshakeState == 2 && OpCodes.ServerBound.ContainsKey(message.PacketId))
             {
-                Log.Debug("ID: {0}  -  Data: {1}", message.PacketId.ToString(), BitConverter.ToString(message.Data));
                 ((SbPacket)Activator.CreateInstance(OpCodes.ServerBound[message.PacketId])).Process(this);
             }
             else if(HandshakeState == 0 && message.PacketId == 0x00)
@@ -98,6 +118,32 @@ namespace LitMC.Network
         public void PushPacket(byte[] packet)
         {
             DataToSend.Add(packet);
+            DataToSendSize += packet.Length;
+        }
+
+        private bool Send()
+        {
+            MinecraftProtocolMessage message = new MinecraftProtocolMessage { Data = new byte[DataToSendSize] };
+
+            int pointer = 0;
+            for (int i = 0; i < DataToSend.Count; i++)
+            {
+                Array.Copy(DataToSend[i], 0, message.Data, pointer, DataToSend[i].Length);
+                pointer += DataToSend[i].Length;
+            }
+
+            DataToSend.Clear();
+            DataToSendSize = 0;
+
+            try
+            {
+                Client.SendMessage(message);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public long Ping()

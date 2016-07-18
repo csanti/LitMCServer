@@ -38,7 +38,9 @@ namespace LitMC
             OpCodes.Init();
 
             TcpServer = new TcpServer("127.0.0.1", 25565, 20); //TODO: cargar desde configuración
-            
+            Connection.SendAllThread.Start();
+
+
             TcpServer.BeginListening();
             serverStartStopwatch.Stop();
             Console.WriteLine("----------------------------------------------------------------------------");

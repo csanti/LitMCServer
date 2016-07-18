@@ -16,20 +16,42 @@ namespace LitMC.Network
 
         public void Send(IConnection connection)
         {
+            byte[] body;
+            byte[] header;
+            byte[] packet;
 
-            using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream bodyStream = new MemoryStream())
             {
-                using (BinaryWriter writer = new BinaryWriter(stream, new UTF8Encoding()))
-                {
-                    //escribir length y opcode
-
-                    //escribir datos del paquete
+                using (BinaryWriter writer = new BinaryWriter(bodyStream, new UTF8Encoding()))
+                {                    
                     Write(writer);                    
                 }
-                Log.Debug("Enviando: {0}", BitConverter.ToString(stream.ToArray()));
+                
+
+                body = bodyStream.ToArray();
             }
-            
-            
+
+            using (MemoryStream headerStream = new MemoryStream())
+            {
+                using (BinaryWriter writer = new BinaryWriter(headerStream, new UTF8Encoding()))
+                {
+                    WriteVarInt(writer, (uint)(body.Length + 1));
+                    writer.Write(OpCodes.ClientBound[GetType()]);
+                }
+                
+
+                header = headerStream.ToArray();
+            }
+
+            int totalLenght = header.Length + body.Length;
+            packet = new byte[totalLenght];
+            header.CopyTo(packet, 0);
+            body.CopyTo(packet, header.Length);
+
+            Log.Debug("Enviando: {0}", BitConverter.ToString(packet.ToArray()));
+
+            connection.PushPacket(packet);
+
             //pushpacket
         }
 

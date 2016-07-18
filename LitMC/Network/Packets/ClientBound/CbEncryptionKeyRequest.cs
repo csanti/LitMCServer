@@ -11,7 +11,7 @@ namespace LitMC.Network.Packets.ClientBound
         public CbEncryptionKeyRequest(string serverId, byte[] encodedKey, byte[] verifyToken)
         {
             ServerId = serverId;
-            EncodedKey = encodedKey;
+            EncodedKey = new byte[] { 0x00, 0x01 };
             VerifyToken = verifyToken;
         }
         protected override void Write(BinaryWriter writer)

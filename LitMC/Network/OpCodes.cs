@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LitMC.Network.Packets.ServerBound;
+using LitMC.Network.Packets.ClientBound;
 
 namespace LitMC.Network
 {
@@ -15,6 +16,8 @@ namespace LitMC.Network
         public static void Init()
         {
             ServerBound.Add(0x00, typeof(SbPacketHandshake));
+
+            ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
         }
     }
 }
