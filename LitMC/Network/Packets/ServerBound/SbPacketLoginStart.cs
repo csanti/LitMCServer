@@ -40,9 +40,10 @@ namespace LitMC.Network.Packets.ServerBound
             }
             else
             {
-                new CbLoginSuccess().Send(Connection);
-                new CbJoinGame().Send(Connection);
-                new CbSpawnLocation().Send(Connection);
+                Connection.SetPlayer(username);
+                //new CbLoginSuccess().Send(Connection);
+                //new CbJoinGame().Send(Connection);
+                //new CbSpawnLocation().Send(Connection);
             }
 
             Connection.HandshakeState = 2;

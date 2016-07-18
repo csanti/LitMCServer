@@ -5,16 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LitMC.Network;
+using LitMC.Data;
 
 namespace LitMC.Network.Packets.ClientBound
 {
     public class CbLoginSuccess : CbPacket
     {
-        protected override void Write(BinaryWriter writer)
+        private Player Player;
+        
+        public CbLoginSuccess(Player player)
         {
-            Guid playerUUID = Guid.NewGuid();
-            WriteString(writer, playerUUID.ToString());
-            WriteString(writer, "Username");
+            Player = player;
+        }
+
+        protected override void Write(BinaryWriter writer)
+        {            
+            WriteString(writer, Player.UUID);
+            WriteString(writer, Player.Username);
         }
     }
 }

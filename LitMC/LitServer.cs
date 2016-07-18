@@ -9,9 +9,9 @@ using System.Diagnostics;
 
 namespace LitMC
 {
-    class LitServer
+    class LitServer : Global
     {
-        private static TcpServer TcpServer;
+        private static TcpServer TcpServer;        
 
         static void Main(string[] args)
         {
@@ -36,6 +36,10 @@ namespace LitMC
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
 
             Configuration.LoadConfiguration();
+
+            World = new World();
+
+
             OpCodes.Init();
 
             TcpServer = new TcpServer(Configuration.ServerIP, Configuration.ServerPort, Configuration.ServerPort); 

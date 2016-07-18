@@ -163,6 +163,13 @@ namespace LitMC.Network
             Client.Disconnect();
         }
 
+        public void SetPlayer(string username)
+        {
+            Player = new Player(username, this);
+
+            Player.Join();
+        }
+
 
     }
 }

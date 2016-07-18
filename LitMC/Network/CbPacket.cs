@@ -20,6 +20,8 @@ namespace LitMC.Network
             byte[] header;
             byte[] packet;
 
+            //TODO: Optimizar
+
             using (MemoryStream bodyStream = new MemoryStream())
             {
                 using (BinaryWriter writer = new BinaryWriter(bodyStream, new UTF8Encoding()))
@@ -50,9 +52,7 @@ namespace LitMC.Network
 
             Log.Debug("Enviando - ID: {0} Data: {1}", OpCodes.ClientBound[GetType()], BitConverter.ToString(packet.ToArray()));
 
-            connection.PushPacket(packet);
-
-            //pushpacket
+            connection.PushPacket(packet);           
         }
 
         protected abstract void Write(BinaryWriter writer);
@@ -90,6 +90,16 @@ namespace LitMC.Network
         }
 
         protected void WriteBoolean(BinaryWriter writer, bool data)
+        {
+            writer.Write(data);
+        }
+
+        protected void WriteDouble(BinaryWriter writer, double data)
+        {
+            writer.Write(data);
+        }
+
+        protected void WriteFloat(BinaryWriter writer, float data)
         {
             writer.Write(data);
         }
