@@ -39,6 +39,10 @@ namespace LitMC.Network
 
         public short HandshakeState;  
 
+        public byte[] VerificationToken;
+
+        protected List<byte[]> DataToSend = new List<byte[]>();
+
         public Connection(IScsServerClient client)
         {
             Client = client;
@@ -91,9 +95,9 @@ namespace LitMC.Network
             Client = null;
             Log.Info("Cliente desconectado en: {0}", RemoteEndPoint);
         }
-        public void PushPacket(byte[] data)
+        public void PushPacket(byte[] packet)
         {
-
+            DataToSend.Add(packet);
         }
 
         public long Ping()

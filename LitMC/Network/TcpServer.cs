@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Hik.Communication.Scs.Communication.EndPoints.Tcp;
 using Hik.Communication.Scs.Server;
 using LitMC.Utils;
+using System.Security.Cryptography;
 
 namespace LitMC.Network
 {
@@ -17,11 +18,17 @@ namespace LitMC.Network
 
         public IScsServer Server;
 
+        protected RSACryptoServiceProvider CryptoServiceProvider;
+        public static RSAParameters ServerKey;
+
         public TcpServer(string bindAddress, int bindPort, int maxConnections)
         {
             BindAddress = bindAddress;
             BindPort = bindPort;
             MaxConnections = maxConnections;
+
+            CryptoServiceProvider = new RSACryptoServiceProvider(1024);
+            ServerKey = CryptoServiceProvider.ExportParameters(true);
         }
 
         public void BeginListening()
