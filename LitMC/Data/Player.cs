@@ -8,6 +8,8 @@ namespace LitMC.Data
 {
     public class Player
     {
+        public string UUID;
+        public int EID;
         
         public Player()
         {

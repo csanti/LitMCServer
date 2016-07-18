@@ -26,12 +26,9 @@ namespace LitMC.Network.Protocols
             Stream.Write(receivedBytes, 0, receivedBytes.Length);
 
             List<IScsMessage> messages = new List<IScsMessage>();
-
-
             
             //int packetLenghtBytes = VarintBitConverter.
-
-            //TODO: pueden llegar varios mensajes en un mismo paquete TCP?
+            
             while (ReadMessage(messages));
             
 

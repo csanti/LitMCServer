@@ -78,5 +78,20 @@ namespace LitMC.Network
         {
             writer.Write(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
         }
+        
+        protected void WriteInt(BinaryWriter writer, int data)
+        {
+            writer.Write(data);
+        }
+
+        protected void WriteUByte(BinaryWriter writer, byte data)
+        {
+            writer.Write(data);
+        }
+
+        protected void WriteBoolean(BinaryWriter writer, bool data)
+        {
+            writer.Write(data);
+        }
     }
 }

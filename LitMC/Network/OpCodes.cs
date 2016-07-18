@@ -21,6 +21,7 @@ namespace LitMC.Network
             ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
             ClientBound.Add(typeof(CbLoginSuccess), 0x02);
             ClientBound.Add(typeof(CbSpawnLocation), 0x43);
+            ClientBound.Add(typeof(CbJoinGame), 0x23);
         }
     }
 }

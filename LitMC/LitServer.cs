@@ -35,9 +35,10 @@ namespace LitMC
             Stopwatch serverStartStopwatch = Stopwatch.StartNew();
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
 
+            Configuration.LoadConfiguration();
             OpCodes.Init();
 
-            TcpServer = new TcpServer("127.0.0.1", 25565, 20); //TODO: cargar desde configuración
+            TcpServer = new TcpServer(Configuration.ServerIP, Configuration.ServerPort, Configuration.ServerPort); 
             Connection.SendAllThread.Start();
 
 

@@ -18,8 +18,8 @@ namespace LitMC.Network.Packets.ServerBound
         public override void Process()
         {
             Log.Debug("[PACKET] LoginStart - Username: {0}", username);
-            bool encryptionEnabled = false;
-            if(encryptionEnabled)
+            
+            if(Configuration.EncryptionEnabled)
             {
                 var verifyToken = new byte[4];
                 var csp = new RNGCryptoServiceProvider();
@@ -41,6 +41,7 @@ namespace LitMC.Network.Packets.ServerBound
             else
             {
                 new CbLoginSuccess().Send(Connection);
+                new CbJoinGame().Send(Connection);
                 new CbSpawnLocation().Send(Connection);
             }
 

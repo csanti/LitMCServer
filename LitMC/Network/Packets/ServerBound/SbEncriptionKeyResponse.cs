@@ -14,7 +14,7 @@ namespace LitMC.Network.Packets.ServerBound
 
         public override void Process()
         {
-            Log.Debug("[PACKET] Encription Response - SharedSecret: {0} Token: {1}", BitConverter.ToString(SharedSecret), BitConverter.ToString(Token));
+            Log.Info("[PACKET] Encription Response - No implementado!");
         }
 
         public override void Read()
