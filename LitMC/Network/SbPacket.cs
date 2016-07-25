@@ -13,80 +13,45 @@ namespace LitMC.Network
     public abstract class SbPacket : ISbPacket
     {
         protected Connection Connection;
-        protected MemoryStream Stream;
+        protected BinaryReader Reader;
 
         public void Process(Connection connection)
         {
-            Stream = new MemoryStream(connection.Buffer);
-            Stream.Position = 0;
-            Connection = connection;
-            Read();
+            Connection = connection;                                    
 
             try
             {
+                using (MemoryStream Stream = new MemoryStream(connection.Buffer))
+                {
+                    Stream.Position = 0;
+                    using (Reader = new BinaryReader(Stream, new UnicodeEncoding(true, false)))
+                    {
+                        Read(Reader);
+                    }
+                }
                 Process();
             }
             catch(Exception ex)
             {
-                Log.Warn("Error al procesar paquete ServerBound");
+                Log.Warn("Error al procesar/leer paquete");
                 Log.WarnException("SbPacket", ex);
             }
 
         }
 
-        public abstract void Read();
-        public abstract void Process();
-
         protected string ReadString()
         {
-            string result = null;
-            int stringLength = ReadVarInt();
-            byte[] content = new byte[stringLength];
-            try
-            {
-                Stream.Read(content, 0, stringLength);
-                result = Encoding.UTF8.GetString(content, 0, content.Length);
-            }
-            catch (Exception ex)
-            {
-                Log.WarnException("SbPacket-ReadString ", ex);
-            }
-            
-            return result;     
-        }
-        protected int ReadVarInt()
-        {
-            int result = 0;
-            byte[] varIntRaw = new byte[Stream.Length - Stream.Position];
-            try
-            {
-                Stream.Read(varIntRaw, 0, (int)Stream.Length - (int)Stream.Position);
-                Stream.Position -= varIntRaw.Length;
-                result = (int)VarintBitConverter.ToUInt16(varIntRaw);
-                int offset = (int)(result / 256) + 1;
-                Stream.Position += offset;
-            }
-            catch (Exception ex)
-            {
-                Log.WarnException("SbPacket-ReadVarInt ", ex);
-            }            
-            return result;
+            byte[] stringLengthB = Reader.ReadBytes(2);
+            Array.Reverse(stringLengthB);
+            var count = BitConverter.ToInt16(stringLengthB, 0);  
+            char[] chars = Reader.ReadChars(count);
+            return new string(chars);
         }
 
-        protected byte[] ReadBytes()
-        {
-            int arrayLenght = ReadVarInt();
-            byte[] result = new byte[arrayLenght];
 
-            try
-            {
-                Stream.Read(result, 0, arrayLenght);                
-            }
-            catch (Exception ex)
-            {
-                Log.WarnException("SbPacket-ReadBytes ", ex);
-            }
-            return result;
-        }
+
+        public abstract void Read(BinaryReader reader);
+        public abstract void Process();
+
     }
 }

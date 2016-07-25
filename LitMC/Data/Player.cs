@@ -34,13 +34,13 @@ namespace LitMC.Data
 
             Position = new Position(0, 0, 0, 0f, 0f);
 
-            new CbLoginSuccess(this).Send(Connection);
+            //new CbLoginSuccess(this).Send(Connection);
         }
 
         public void Join()
         {
-            new CbJoinGame(this).Send(Connection);
-            new CbPlayerPosition(Position).Send(Connection);
+            //new CbJoinGame(this).Send(Connection);
+            //new CbPlayerPosition(Position).Send(Connection);
         }
 
         public void StreamChunks()

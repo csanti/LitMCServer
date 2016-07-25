@@ -16,7 +16,7 @@ namespace LitMC.Network
         public static void Init()
         {
             
-            //ServerBound.Add(0x01, typeof(SbEncriptionKeyResponse));
+            ServerBound.Add(0x02, typeof(SbHandshake));
 
             //ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
             //ClientBound.Add(typeof(CbLoginSuccess), 0x02);
