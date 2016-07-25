@@ -16,13 +16,13 @@ namespace LitMC.Network
         public static void Init()
         {
             
-            ServerBound.Add(0x01, typeof(SbEncriptionKeyResponse));
+            //ServerBound.Add(0x01, typeof(SbEncriptionKeyResponse));
 
-            ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
-            ClientBound.Add(typeof(CbLoginSuccess), 0x02);
-            ClientBound.Add(typeof(CbSpawnLocation), 0x43);
-            ClientBound.Add(typeof(CbJoinGame), 0x23);
-            ClientBound.Add(typeof(CbPlayerPosition), 0x2E);
+            //ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
+            //ClientBound.Add(typeof(CbLoginSuccess), 0x02);
+            //ClientBound.Add(typeof(CbSpawnLocation), 0x43);
+            //ClientBound.Add(typeof(CbJoinGame), 0x23);
+            //ClientBound.Add(typeof(CbPlayerPosition), 0x2E);
         }
     }
 }

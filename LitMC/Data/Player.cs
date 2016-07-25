@@ -42,5 +42,14 @@ namespace LitMC.Data
             new CbJoinGame(this).Send(Connection);
             new CbPlayerPosition(Position).Send(Connection);
         }
+
+        public void StreamChunks()
+        {
+            //detectar los chunks que se tienen que enviar
+
+            //generar chunks
+
+            //enviar
+        }
     }
 }

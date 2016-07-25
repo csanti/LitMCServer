@@ -62,7 +62,9 @@
     <Compile Include="Data\Interfaces\ICbPacket.cs" />
     <Compile Include="Data\Interfaces\IConnection.cs" />
     <Compile Include="Data\Interfaces\ISbPacket.cs" />
+    <Compile Include="Data\Interfaces\IWorldGenerator.cs" />
     <Compile Include="Data\Player.cs" />
+    <Compile Include="Generator\Chunk.cs" />
     <Compile Include="Generator\FlatWorldGenerator.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="LitServer.cs" />

@@ -86,20 +86,9 @@ namespace LitMC.Network
             Buffer = message.Data;
             Log.Debug("ID: {0}  -  Data: {1}", message.PacketId.ToString(), BitConverter.ToString(message.Data));
 
-            if (HandshakeState == 2 && OpCodes.ServerBound.ContainsKey(message.PacketId))
+            if (OpCodes.ServerBound.ContainsKey(message.PacketId))
             {
                 ((SbPacket)Activator.CreateInstance(OpCodes.ServerBound[message.PacketId])).Process(this);
-            }
-            else if(HandshakeState == 0 && message.PacketId == 0x00)
-            {
-                //Handshake packet
-                new SbPacketHandshake().Process(this);
-            }
-            else if(HandshakeState == 1 && message.PacketId == 0x00)
-            {
-                //Login Start
-                new SbPacketLoginStart().Process(this);
-                
             }
             else
             {
