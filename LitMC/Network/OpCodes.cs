@@ -18,10 +18,16 @@ namespace LitMC.Network
             
             ServerBound.Add(0x02, typeof(SbHandshake));
             ServerBound.Add(0x01, typeof(SbLoginRequest));
+            ServerBound.Add(0x0D, typeof(SbPlayerPositionAndLook));
 
             ClientBound.Add(typeof(CbHandshake), 0x02);
             ClientBound.Add(typeof(CbDisconnect), 0xFF);
             ClientBound.Add(typeof(CbLoginRequest), 0x01);
+            ClientBound.Add(typeof(CbMapChunk), 0x33);
+            ClientBound.Add(typeof(CbSpawnPosition), 0x06);
+            ClientBound.Add(typeof(CbPlayerPositionAndLook), 0x0D);
+            ClientBound.Add(typeof(CbRespawn), 0x09);
+            ClientBound.Add(typeof(CbPreChunk), 0x32);
 
             //ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
             //ClientBound.Add(typeof(CbLoginSuccess), 0x02);

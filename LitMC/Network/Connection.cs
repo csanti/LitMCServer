@@ -90,8 +90,8 @@ namespace LitMC.Network
                 ((SbPacket)Activator.CreateInstance(OpCodes.ServerBound[message.PacketId])).Process(this);
             }
             else
-            {
-                Log.Debug("Packete con ID desconocido - ID: {0}", message.PacketId);
+            {                
+                //Log.Debug("Packete con ID desconocido - ID: {0}", message.PacketId);
             }
 
             
@@ -111,26 +111,28 @@ namespace LitMC.Network
 
         private bool Send()
         {
-            MinecraftProtocolMessage message = new MinecraftProtocolMessage { Data = new byte[DataToSendSize] };
+            if (DataToSend.Count == 0)
+                return true;           
 
-            int pointer = 0;
+            //Un mensaje por Send
             for (int i = 0; i < DataToSend.Count; i++)
             {
-                Array.Copy(DataToSend[i], 0, message.Data, pointer, DataToSend[i].Length);
-                pointer += DataToSend[i].Length;
+                MinecraftProtocolMessage message = new MinecraftProtocolMessage { Data = DataToSend[i] };                             
+                try
+                {
+                    Client.SendMessage(message);
+                    Log.Debug("[ENVIADO] ID: {0} Tamaño: {1} bytes", message.Data[0], message.Data.Length);
+                }
+                catch
+                {
+                    return false; //conexion cerrada
+                }
             }
 
             DataToSend.Clear();
             DataToSendSize = 0;
 
-            try
-            {
-                Client.SendMessage(message);
-            }
-            catch
-            {
-                return false;
-            }
+            
             return true;
         }
 

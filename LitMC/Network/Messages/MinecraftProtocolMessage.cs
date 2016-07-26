@@ -6,5 +6,6 @@ namespace LitMC.Network.Messages
     {
         public byte PacketId;
         public byte[] Data;
+
     }
 }

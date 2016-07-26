@@ -18,46 +18,42 @@ namespace LitMC.Generator
     {
         public static byte[] generateSimpleChunk(byte sizeX, byte sizeY, byte sizeZ) //real sizes
         {
-
-            byte[] typeArray = new byte[sizeX * sizeY * sizeZ / 2];
-
+            byte[] typeArray = new byte[sizeX * sizeY * sizeZ];
             byte[] metadataArray = new byte[sizeX * sizeY * sizeZ / 2];
             byte[] lightArray = new byte[sizeX * sizeY * sizeZ / 2];
             byte[] skyArray = new byte[sizeX * sizeY * sizeZ / 2];
+
             for (int x = 0; x < sizeX; x++)
             {
                 for (int y = 0; y < sizeY; y++)
                 {
                     for (int z = 0; z < sizeZ; z++)
                     {
-                        int index = y + (z * (sizeY + 1)) + (x * (sizeY + 1) * (sizeZ + 1));
+                        int index = y + (z * sizeY) + (x * sizeY * sizeZ);
                         typeArray[index] = 0x01; //stone
-                        if (index % 0 == 0)
-                        {
-                            metadataArray[index] = 0x00;
-                            lightArray[index] = 0x00;
-                            skyArray[index] = 0x00;
+                        if (index % 2 == 0)
+                        {         
+                            metadataArray[index/2] = 0x00;
+                            lightArray[index/2] = 0x00;
+                            skyArray[index/2] = 0x00;
                         }
                     }
                 }
-            }
+            }          
+                
 
-            using (MemoryStream uncompresssedStream = new MemoryStream())
+            using (MemoryStream compressedStream = new MemoryStream())
             {
-                uncompresssedStream.Write(typeArray, 0, typeArray.Length);
-                uncompresssedStream.Write(metadataArray, typeArray.Length, metadataArray.Length);
-                uncompresssedStream.Write(lightArray, typeArray.Length + metadataArray.Length, lightArray.Length);
-                uncompresssedStream.Write(skyArray, typeArray.Length + metadataArray.Length + lightArray.Length, skyArray.Length);
-
-                using (MemoryStream compressedStream = new MemoryStream())
+                using (DeflateStream compressionStream = new DeflateStream(compressedStream, CompressionMode.Compress))
                 {
-                    using (DeflateStream compressionStream = new DeflateStream(compressedStream, CompressionMode.Compress))
-                    {
-                        uncompresssedStream.CopyTo(compressionStream);
-                    }
-                    return compressedStream.ToArray();
+                    compressionStream.Write(typeArray, 0, typeArray.Length);
+                    compressionStream.Write(metadataArray, 0, metadataArray.Length);
+                    compressionStream.Write(lightArray, 0, lightArray.Length);
+                    compressionStream.Write(skyArray, 0, skyArray.Length);
                 }
+                return compressedStream.ToArray();
             }
+            
         }
     }
 
