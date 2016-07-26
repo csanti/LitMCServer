@@ -11,6 +11,7 @@ namespace LitMC.Utils
         public static string ServerIP = "127.0.0.1";
         public static int ServerPort = 25565;
         public static short MaxConnections = 20;
+        public static short ProtocolVersion = 22;
         public static bool EncryptionEnabled = false;
         public static bool OnlineMode = false;
         public static bool CompressionEnabled = false;

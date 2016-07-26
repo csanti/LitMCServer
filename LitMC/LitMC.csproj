@@ -72,8 +72,11 @@
     <Compile Include="Network\Connection.cs" />
     <Compile Include="Network\Messages\MinecraftProtocolMessage.cs" />
     <Compile Include="Network\OpCodes.cs" />
+    <Compile Include="Network\Packets\ClientBound\CbDisconnect.cs" />
     <Compile Include="Network\Packets\ClientBound\CbHandshake.cs" />
+    <Compile Include="Network\Packets\ClientBound\CbLoginRequest.cs" />
     <Compile Include="Network\Packets\ServerBound\SbHandshake.cs" />
+    <Compile Include="Network\Packets\ServerBound\SbLoginRequest.cs" />
     <Compile Include="Network\Protocols\RawProtocol.cs" />
     <Compile Include="Network\SbPacket.cs" />
     <Compile Include="Network\Security\Cryptography.cs" />

@@ -19,7 +19,7 @@ namespace LitMC.Data
         public string Username;
 
         public byte GameMode;
-        public int Dimension;
+        public sbyte Dimension;
 
         public Position Position;
           
@@ -33,13 +33,14 @@ namespace LitMC.Data
             EID = BitConverter.ToInt32(playerGUID.ToByteArray(), 0);
 
             Position = new Position(0, 0, 0, 0f, 0f);
-
-            //new CbLoginSuccess(this).Send(Connection);
+            Dimension = 0;            
         }
 
         public void Join()
         {
-            //new CbJoinGame(this).Send(Connection);
+            Global.World.JoinWorld(Connection);
+            new CbLoginRequest(this, Global.World).Send(Connection);
+            Log.Debug("{0} Joined World", Username);
             //new CbPlayerPosition(Position).Send(Connection);
         }
 

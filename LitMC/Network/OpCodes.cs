@@ -17,6 +17,11 @@ namespace LitMC.Network
         {
             
             ServerBound.Add(0x02, typeof(SbHandshake));
+            ServerBound.Add(0x01, typeof(SbLoginRequest));
+
+            ClientBound.Add(typeof(CbHandshake), 0x02);
+            ClientBound.Add(typeof(CbDisconnect), 0xFF);
+            ClientBound.Add(typeof(CbLoginRequest), 0x01);
 
             //ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
             //ClientBound.Add(typeof(CbLoginSuccess), 0x02);

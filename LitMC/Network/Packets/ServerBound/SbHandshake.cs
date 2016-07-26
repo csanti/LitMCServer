@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LitMC.Utils;
 using System.IO;
+using LitMC.Network.Packets.ClientBound;
 
 namespace LitMC.Network.Packets.ServerBound
 {
@@ -14,13 +15,14 @@ namespace LitMC.Network.Packets.ServerBound
 
         public override void Process()
         {
-            Log.Debug("[PACKET] LoginStart - Username: {0}", username);
-            
+            Log.Debug("[PACKET] Handshake - Username: {0}", username);
+            new CbHandshake(false).Send(Connection);
         }
 
         public override void Read(BinaryReader reader)
         {
-            username = ReadString();
+            username = ReadString(reader);
+            
         }
     }
 }

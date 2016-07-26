@@ -13,7 +13,7 @@ namespace LitMC.Network
     public abstract class SbPacket : ISbPacket
     {
         protected Connection Connection;
-        protected BinaryReader Reader;
+        
 
         public void Process(Connection connection)
         {
@@ -24,7 +24,7 @@ namespace LitMC.Network
                 using (MemoryStream Stream = new MemoryStream(connection.Buffer))
                 {
                     Stream.Position = 0;
-                    using (Reader = new BinaryReader(Stream, new UnicodeEncoding(true, false)))
+                    using (BinaryReader Reader = new BinaryReader(Stream, new UnicodeEncoding(true, false)))
                     {
                         Read(Reader);
                     }
@@ -39,13 +39,25 @@ namespace LitMC.Network
 
         }
 
-        protected string ReadString()
-        {
-            byte[] stringLengthB = Reader.ReadBytes(2);
-            Array.Reverse(stringLengthB);
-            var count = BitConverter.ToInt16(stringLengthB, 0);  
+        protected string ReadString(BinaryReader Reader)
+        {            
+            var count = ReadInt16(Reader);
             char[] chars = Reader.ReadChars(count);
             return new string(chars);
+        }
+
+        protected int ReadInt(BinaryReader Reader)
+        {
+            byte[] intB = Reader.ReadBytes(4);
+            Array.Reverse(intB);
+            return BitConverter.ToInt32(intB, 0);
+        }
+
+        protected int ReadInt16(BinaryReader Reader)
+        {
+            byte[] intB = Reader.ReadBytes(2);
+            Array.Reverse(intB);
+            return BitConverter.ToInt16(intB, 0);
         }
 
 

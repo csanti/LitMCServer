@@ -16,92 +16,52 @@ namespace LitMC.Network
 
         public void Send(IConnection connection)
         {
-            byte[] body;
-            byte[] header;
-            byte[] packet;
+            byte[] packet;           
 
             //TODO: Optimizar
 
-            using (MemoryStream bodyStream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
             {
-                using (BinaryWriter writer = new BinaryWriter(bodyStream, new UTF8Encoding()))
-                {                    
-                    Write(writer);                    
-                }
-                
-
-                body = bodyStream.ToArray();
-            }
-
-            using (MemoryStream headerStream = new MemoryStream())
-            {
-                using (BinaryWriter writer = new BinaryWriter(headerStream, new UTF8Encoding()))
+                using (BinaryWriter Writer = new BinaryWriter(stream, new UnicodeEncoding(true, false)))
                 {
-                    WriteVarInt(writer, (uint)(body.Length + 1));                    
-                    writer.Write(OpCodes.ClientBound[GetType()]);
+                    Writer.Write(OpCodes.ClientBound[GetType()]);           
+                    Write(Writer);                    
                 }
-                
+                packet = stream.ToArray();
+            }  
 
-                header = headerStream.ToArray();
-            }
-
-            int totalLenght = header.Length + body.Length;
-            packet = new byte[totalLenght];
-            header.CopyTo(packet, 0);
-            body.CopyTo(packet, header.Length);
-
-            Log.Debug("Enviando - ID: {0} Data: {1}", OpCodes.ClientBound[GetType()], BitConverter.ToString(packet.ToArray()));
+            //Log.Debug("Enviando - ID: {0} Paquete: {1}", OpCodes.ClientBound[GetType()], BitConverter.ToString(packet));
 
             connection.PushPacket(packet);           
         }
 
         protected abstract void Write(BinaryWriter writer);
 
-        protected void WriteVarInt(BinaryWriter writer, uint data)
+        protected void WriteInt(BinaryWriter writer, int data)
         {
-            byte[] bytes = VarintBitConverter.GetVarintBytes(data);
-            writer.Write(bytes);
+            byte[] intB = BitConverter.GetBytes(data);
+            Array.Reverse(intB);
+            writer.Write(intB);
+        }
+        protected void WriteInt16(BinaryWriter writer, int data)
+        {
+            Int16 int16 = Convert.ToInt16(data);
+            byte[] intB = BitConverter.GetBytes(int16);
+            Array.Reverse(intB);
+            writer.Write(intB);
         }
 
         protected void WriteString(BinaryWriter writer, string data)
         {
-            writer.Write(data);
+            //Write int16 bendian
+            WriteInt16(writer, data.Length);
+            writer.Write(data.ToCharArray());
         }
-
-        protected void WriteBytes(BinaryWriter writer, byte[] data)
+        protected void WriteLong(BinaryWriter writer, long data)
         {
-            WriteVarInt(writer, (uint)data.Length);
-            writer.Write(data);
-        }
-
-        protected void WritePosition(BinaryWriter writer, int x, int y, int z)
-        {
-            writer.Write(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
-        }
-        
-        protected void WriteInt(BinaryWriter writer, int data)
-        {
-            writer.Write(data);
-        }
-
-        protected void WriteUByte(BinaryWriter writer, byte data)
-        {
-            writer.Write(data);
-        }
-
-        protected void WriteBoolean(BinaryWriter writer, bool data)
-        {
-            writer.Write(data);
-        }
-
-        protected void WriteDouble(BinaryWriter writer, double data)
-        {
-            writer.Write(data);
-        }
-
-        protected void WriteFloat(BinaryWriter writer, float data)
-        {
-            writer.Write(data);
+            byte[] longB = BitConverter.GetBytes(data);
+            Array.Reverse(longB);
+            writer.Write(longB);
         }
     }
 }

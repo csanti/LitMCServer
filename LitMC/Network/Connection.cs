@@ -11,7 +11,6 @@ using Hik.Communication.Scs.Communication;
 using Hik.Communication.Scs.Communication.Messages;
 using Hik.Communication.Scs.Server;
 using Hik.Communication.Scs.Communication.Protocols.BinarySerialization;
-using Hik.Communication.Scs.Communication.Messages;
 using LitMC.Utils;
 using LitMC.Network.Protocols;
 using LitMC.Network.Packets.ServerBound;
@@ -80,11 +79,11 @@ namespace LitMC.Network
 
         private void OnMessageReceived(object sender, MessageEventArgs e)
         {
-            Log.Info("Mensaje recibido de: {0}", RemoteEndPoint);
+            //Log.Info("Mensaje recibido de: {0}", RemoteEndPoint);
 
             MinecraftProtocolMessage message = (MinecraftProtocolMessage)e.Message;
             Buffer = message.Data;
-            Log.Debug("ID: {0}  -  Data: {1}", message.PacketId.ToString(), BitConverter.ToString(message.Data));
+            //Log.Debug("ID: {0}  -  Data: {1}", message.PacketId.ToString(), BitConverter.ToString(message.Data));
 
             if (OpCodes.ServerBound.ContainsKey(message.PacketId))
             {
@@ -92,7 +91,7 @@ namespace LitMC.Network
             }
             else
             {
-                Log.Debug("Packete con ID desconocido");
+                Log.Debug("Packete con ID desconocido - ID: {0}", message.PacketId);
             }
 
             
