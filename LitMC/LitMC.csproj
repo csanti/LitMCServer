@@ -75,6 +75,7 @@
     <Compile Include="Network\Packets\ClientBound\CbDisconnect.cs" />
     <Compile Include="Network\Packets\ClientBound\CbHandshake.cs" />
     <Compile Include="Network\Packets\ClientBound\CbLoginRequest.cs" />
+    <Compile Include="Network\Packets\ClientBound\CbMapChunk.cs" />
     <Compile Include="Network\Packets\ServerBound\SbHandshake.cs" />
     <Compile Include="Network\Packets\ServerBound\SbLoginRequest.cs" />
     <Compile Include="Network\Protocols\RawProtocol.cs" />
