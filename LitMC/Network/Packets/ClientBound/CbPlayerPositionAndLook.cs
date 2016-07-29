@@ -15,13 +15,13 @@ namespace LitMC.Network.Packets.ClientBound
 
         protected override void Write(BinaryWriter writer)
         {
-            writer.Write((double)0);
-            writer.Write((double)0);
-            writer.Write((double)0);
-            writer.Write((double)0);
-            writer.Write(0f);
-            writer.Write(0f);
-            writer.Write(true);
+            writer.Write((double)200);
+            writer.Write((double)200);
+            writer.Write((double)200);
+            writer.Write((double)200);
+            writer.Write((float)0);
+            writer.Write((float)0);
+            writer.Write((byte)0x00);
         }
     }
 }

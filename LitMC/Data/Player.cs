@@ -41,7 +41,15 @@ namespace LitMC.Data
             Global.World.JoinWorld(Connection);
             new CbLoginRequest(this, Global.World).Send(Connection);
             Log.Debug("{0} Joined World", Username);
+
+            new CbPreChunk().Send(Connection);
+            new CbMapChunk().Send(Connection);
+            //new CbSpawnPosition(0, 200, 0).Send(Connection);
+            new CbTimeUpdate(6000).Send(Connection);
+            new CbPlayerPositionAndLook().Send(Connection);
             
+            //new CbRespawn(Connection.Player, Global.World).Send(Connection);
+
             //new CbPlayerPosition(Position).Send(Connection);
         }
 

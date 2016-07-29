@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO.Compression;
 using System.IO;
+using zlib;
 
 
 namespace LitMC.Generator
@@ -44,7 +44,7 @@ namespace LitMC.Generator
 
             using (MemoryStream compressedStream = new MemoryStream())
             {
-                using (DeflateStream compressionStream = new DeflateStream(compressedStream, CompressionMode.Compress))
+                using (ZOutputStream compressionStream = new ZOutputStream(compressedStream, zlibConst.Z_DEFAULT_COMPRESSION))
                 {
                     compressionStream.Write(typeArray, 0, typeArray.Length);
                     compressionStream.Write(metadataArray, 0, metadataArray.Length);

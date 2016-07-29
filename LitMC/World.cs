@@ -25,7 +25,7 @@ namespace LitMC
             DefaultGameMode = 0;
             Difficulty = 0;
             LevelType = "flat";
-            MapSeed = 0;
+            MapSeed = 10;
             ServerMode = 1;
             WorldHeight = 128;
             WorldMaxPlayers = 20;

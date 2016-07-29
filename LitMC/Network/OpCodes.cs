@@ -28,6 +28,7 @@ namespace LitMC.Network
             ClientBound.Add(typeof(CbPlayerPositionAndLook), 0x0D);
             ClientBound.Add(typeof(CbRespawn), 0x09);
             ClientBound.Add(typeof(CbPreChunk), 0x32);
+            ClientBound.Add(typeof(CbTimeUpdate), 0x04);
 
             //ClientBound.Add(typeof(CbEncryptionKeyRequest), 0x01);
             //ClientBound.Add(typeof(CbLoginSuccess), 0x02);

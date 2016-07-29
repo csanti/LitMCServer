@@ -15,9 +15,9 @@ namespace LitMC.Network.Packets.ClientBound
             WriteInt(writer, 0);
             WriteInt16(writer, 0);
             WriteInt(writer, 0);
-            writer.Write(0x0F);
-            writer.Write(0x0F);
-            writer.Write(0x0F);
+            writer.Write((byte)0x0F);
+            writer.Write((byte)0x0F);
+            writer.Write((byte)0x0F);
             byte[] data = Chunk.generateSimpleChunk(0x10, 0x10, 0x10);
             WriteInt(writer, data.Length);
             writer.Write(data);

@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace LitMC.Network.Packets.ClientBound
 {
-    public class CbPreChunk : CbPacket
+    public class CbTimeUpdate : CbPacket
     {
+        private long Time;
+        public CbTimeUpdate(long time)
+        {
+            Time = time;
+        }
         protected override void Write(BinaryWriter writer)
         {
-            WriteInt(writer, 0);
-            WriteInt(writer, 0);
-            writer.Write((byte)0x01);
+            WriteLong(writer, Time);
         }
     }
 }
