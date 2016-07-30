@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LitMC.Network;
 using LitMC.Data;
+using LitMC.Utils;
 
 namespace LitMC
 {
@@ -20,6 +21,8 @@ namespace LitMC
 
         public List<Connection> Connections = new List<Connection>();
 
+        private Position SpawnPosition;
+
         public World()
         {
             DefaultGameMode = 0;
@@ -29,12 +32,23 @@ namespace LitMC
             ServerMode = 1;
             WorldHeight = 128;
             WorldMaxPlayers = 20;
+            SpawnPosition = new Position(5, 20, 5, 0, 0, false);
         }
 
         public bool JoinWorld(Connection connection)
         {
             Connections.Add(connection);
             return true;
+        }
+
+        public Position GetSpawnPosition()
+        {
+            return SpawnPosition;
+        }
+        public void ChangeSpawnPosition(Position newSpawnPosition)
+        {
+            //notify players?
+            SpawnPosition = newSpawnPosition; //cuidado al pasar referencia
         }
     }
 }

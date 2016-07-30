@@ -39,27 +39,39 @@ namespace LitMC.Network
 
         }
 
-        protected string ReadString(BinaryReader Reader)
+        protected string ReadString(BinaryReader reader)
         {            
-            var count = ReadInt16(Reader);
-            char[] chars = Reader.ReadChars(count);
+            var count = ReadInt16(reader);
+            char[] chars = reader.ReadChars(count);
             return new string(chars);
         }
 
-        protected int ReadInt(BinaryReader Reader)
+        protected int ReadInt(BinaryReader reader)
         {
-            byte[] intB = Reader.ReadBytes(4);
+            byte[] intB = reader.ReadBytes(4);
             Array.Reverse(intB);
             return BitConverter.ToInt32(intB, 0);
         }
 
-        protected int ReadInt16(BinaryReader Reader)
+        protected int ReadInt16(BinaryReader reader)
         {
-            byte[] intB = Reader.ReadBytes(2);
+            byte[] intB = reader.ReadBytes(2);
             Array.Reverse(intB);
             return BitConverter.ToInt16(intB, 0);
         }
 
+        protected double ReadDouble(BinaryReader reader)
+        {
+            byte[] doubleB = reader.ReadBytes(8);
+            Array.Reverse(doubleB);
+            return BitConverter.ToDouble(doubleB, 0);
+        }
+        protected float ReadFloat(BinaryReader reader)
+        {
+            byte[] singleB = reader.ReadBytes(4);
+            Array.Reverse(singleB);
+            return BitConverter.ToSingle(singleB, 0);
+        }
 
 
         public abstract void Read(BinaryReader reader);

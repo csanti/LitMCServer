@@ -16,9 +16,7 @@ namespace LitMC.Network
 
         public void Send(IConnection connection)
         {
-            byte[] packet;           
-
-            //TODO: Optimizar
+            byte[] packet;    
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -62,6 +60,19 @@ namespace LitMC.Network
             byte[] longB = BitConverter.GetBytes(data);
             Array.Reverse(longB);
             writer.Write(longB);
+        }
+
+        protected void WriteDouble(BinaryWriter writer, double data)
+        {
+            byte[] doubleB = BitConverter.GetBytes(data);
+            Array.Reverse(doubleB);
+            writer.Write(doubleB);
+        }
+        protected void WriteFloat(BinaryWriter writer, float data)
+        {
+            byte[] floatB = BitConverter.GetBytes(data);
+            Array.Reverse(floatB);
+            writer.Write(floatB);
         }
 
     }

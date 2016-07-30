@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LitMC.Data.Interfaces;
 
 namespace LitMC.Generator
 {
-    class FlatWorldGenerator
+    class FlatWorldGenerator : IWorldGenerator
     {
     }
 }

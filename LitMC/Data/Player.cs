@@ -32,7 +32,7 @@ namespace LitMC.Data
             UUID = playerGUID.ToString();
             EID = BitConverter.ToInt32(playerGUID.ToByteArray(), 0);
 
-            Position = new Position(0, 0, 0, 0f, 0f);
+            Position = new Position(0, 0, 0, 0f, 0f, false);
             Dimension = 0;            
         }
 
@@ -42,11 +42,13 @@ namespace LitMC.Data
             new CbLoginRequest(this, Global.World).Send(Connection);
             Log.Debug("{0} Joined World", Username);
 
+            Position = Global.World.GetSpawnPosition().GetCopy();
+
             new CbPreChunk().Send(Connection);
             new CbMapChunk().Send(Connection);
             //new CbSpawnPosition(0, 200, 0).Send(Connection);
             new CbTimeUpdate(6000).Send(Connection);
-            new CbPlayerPositionAndLook().Send(Connection);
+            new CbPlayerPositionAndLook(Position).Send(Connection);
             
             //new CbRespawn(Connection.Player, Global.World).Send(Connection);
 

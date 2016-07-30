@@ -11,16 +11,25 @@ namespace LitMC.Utils
         public double X;
         public double Y;
         public double Z;
+        public double Stance;
         public float Yaw;
         public float Pitch;
+        public bool OnGround;
 
-        public Position(double x, double y, double z, float yaw, float pitch)
+        public Position(double x, double y, double z, float yaw, float pitch, bool onGround)
         {
             X = x;
             Y = y;
             Z = z;
+            Stance = y;
             Yaw = yaw;
             Pitch = pitch;
+            OnGround = onGround;
+        }
+
+        public Position GetCopy()
+        {
+            return new Position(X, Y, Z, Yaw, Pitch, OnGround);
         }
     }
 }
